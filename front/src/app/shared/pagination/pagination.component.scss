@@ -1,0 +1,29 @@
+.pagination {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 20px;
+  
+    .prev, .next, .page {
+      background-color: rgb(50, 44, 45);
+      border: none;
+      color: white;
+      font-weight: bold;
+      font-size: 16px;
+      padding: 8px 16px;
+      cursor: pointer;
+    }
+  
+    .prev[disabled], .next[disabled], .page.disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+    }
+  
+    .page {
+      &.active {
+        background-color: white;
+        color: rgb(50, 44, 45);
+      }
+    }
+  }
+  

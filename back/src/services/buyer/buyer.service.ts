@@ -1,19 +1,21 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { BuyerModel } from 'src/db/models/buyer/buyer.model';
-import { BuyerFilterInput } from 'src/dto/buyer.dto';
+import { BuyerCreateInput, BuyerFilterInput } from 'src/dto/buyer.dto';
+import { PaginateInput, PaginationOutput } from 'src/dto/pagination.dto';
 import { buildBuyerFilterQuery } from 'src/queryBuilders';
 import { DeleteResult, Like, Repository, UpdateResult } from 'typeorm';
 
 @Injectable()
 export class BuyerService {
+
     constructor(@InjectRepository(BuyerModel) private buyerRepo: Repository<BuyerModel>) { }
 
     async getAll(): Promise<BuyerModel[]> {
         return await this.buyerRepo.find()
     }
 
-    async create(buyer: BuyerModel): Promise<BuyerModel> {
+    async create(buyer: BuyerCreateInput): Promise<BuyerModel> {
         return await this.buyerRepo.save(buyer);
     }
 
@@ -51,11 +53,28 @@ export class BuyerService {
     }
 
     async filter(query: BuyerFilterInput): Promise<BuyerModel[]> {
-        // console.log(query);
         const builderQuery = buildBuyerFilterQuery(query)
-        // console.log(builderQuery);
         const filterQuery = this.buyerRepo.createQueryBuilder('buyer')
-        builderQuery && filterQuery.where(builderQuery.query,builderQuery.queryParam);
+        builderQuery && filterQuery.where(builderQuery.query, builderQuery.queryParam);
         return await filterQuery.getMany();
+    }
+
+    async paginate(payload: PaginateInput): Promise<{ count: number, buyers: BuyerModel[] }> {
+        const query = this.buyerRepo.createQueryBuilder('buyer')
+        query.orderBy('buyer.createdAt', "DESC").take(payload.pageSize).skip(payload.page * payload.pageSize)
+        const buyers = await query.getMany();
+        const count = await this.buyerRepo.createQueryBuilder().getCount()
+
+        return await new Promise((resolve) => {
+            resolve({
+                count,
+                buyers
+            })
+        })
+    }
+
+    async count(): Promise<number> {
+        const query = this.buyerRepo.createQueryBuilder('buyer')
+        return await query.getCount();
     }
 }

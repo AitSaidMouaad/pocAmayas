@@ -1,1 +1,24 @@
-<p>buyer works!</p>
+<form [formGroup]="buyerForm" (ngSubmit)="onSubmit()">
+    <div>
+      <label for="firstName">First Name:</label>
+      <input type="text" id="firstName" formControlName="firstName">
+      <div *ngIf="buyerForm.get('firstName')?.invalid && (buyerForm.get('firstName')?.dirty || buyerForm.get('firstName')?.touched)">
+        <div *ngIf="buyerForm.get('firstName')?.errors">First Name is required.</div>
+      </div>
+    </div>
+    <div>
+      <label for="lastName">Last Name:</label>
+      <input type="text" id="lastName" formControlName="lastName">
+      <div *ngIf="buyerForm.get('lastName')?.invalid && (buyerForm.get('lastName')?.dirty || buyerForm.get('lastName')?.touched)">
+        <div *ngIf="buyerForm.get('lastName')?.errors">Last Name is required.</div>
+      </div>
+    </div>
+    <div>
+      <label for="country">Country:</label>
+      <input type="text" id="country" formControlName="country">
+      <div *ngIf="buyerForm.get('country')?.invalid && (buyerForm.get('country')?.dirty || buyerForm.get('country')?.touched)">
+        <div *ngIf="buyerForm.get('country')?.errors">Country is required.</div>
+      </div>
+    </div>
+    <button type="submit">Submit</button>
+  </form>

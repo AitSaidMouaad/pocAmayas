@@ -29,6 +29,11 @@ import GraphQLJSON from 'graphql-type-json';
   GraphQLModule.forRoot<ApolloDriverConfig>({
     driver: ApolloDriver,
     autoSchemaFile: join(process.cwd(), 'src/schema.gql'),
+
+    definitions: /** environment.production  */false ? null : { path: join('../front/src/app/graphql/graphql.ts'), outputAs: 'interface' },
+
+
+
     resolvers: { JSON: GraphQLJSON },
   }),
   ],

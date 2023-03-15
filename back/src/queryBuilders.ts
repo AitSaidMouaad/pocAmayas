@@ -26,7 +26,6 @@ export function buildBuyerFilterQuery(query: BuyerFilterInput): BuilderOutput | 
     }
     if(builderQueryArray.length>0){
         const queries = builderQueryArray.map(bq=>bq.qr).join(' AND ');
-        //console.log(queries);
         const queriesParams = flattenObject(builderQueryArray.map(bq=>bq.params))
         return {
             query: queries,

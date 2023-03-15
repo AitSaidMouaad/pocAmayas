@@ -1,0 +1,48 @@
+<h2>List of Buyers</h2>
+
+<button class="create-buyer-btn" (click)="createBuyer()">Create Buyer</button>
+
+<div class="search-filter-container">
+    <div class="search-container">
+        <input type="text" placeholder="Search by ID, First Name or Last Name or Country" [(ngModel)]="searchTerm"
+            (keyup)="searchBuyers()">
+    </div>
+    <div class="filter-container">
+        <label for="country-filter">Filter by Country:</label>
+        <select name="country-filter" id="country-filter" [(ngModel)]="filterStuff.country" (change)="filterBuyers()">
+            <option value="">All</option>
+            <option *ngFor="let country of countries" [value]="country">{{ country }}</option>
+        </select>
+        <label for="date-filter">Filter by Date:</label>
+        <label for="date-filter-from">From</label>
+        <input type="date" name="date-filter-from" id="date-filter-from" [(ngModel)]="filterStuff.createdAt.from"
+            (change)="filterBuyers()">
+        <label for="date-filter-from">To</label>
+        <input type="date" name="date-filter-to" id="date-filter-to" [(ngModel)]="filterStuff.createdAt.to"
+            (change)="filterBuyers()">
+    </div>
+</div>
+<h4>Number of Buyers: {{ totalItems }}</h4>
+<table>
+    <thead>
+        <tr>
+            <th>ID</th>
+            <th>First Name</th>
+            <th>Last Name</th>
+            <th>Country</th>
+            <th>Created At</th>
+            <!-- <th>Updated At</th> -->
+        </tr>
+    </thead>
+    <tbody>
+        <tr *ngFor="let buyer of buyers$ | async" [ngClass]="'highlighted'" (click)="editBuyer(buyer.id)">
+            <td>{{ buyer.id }}</td>
+            <td>{{ buyer.firstName }}</td>
+            <td>{{ buyer.lastName }}</td>
+            <td>{{ buyer.country }}</td>
+            <td>{{ buyer.createdAt | date:'dd/MM/yyyy' }}</td>
+        </tr>
+    </tbody>
+</table>
+<app-pagination *ngIf="totalItems>0" [currentPage]="paginationStuff.page" [totalItems]="totalItems" [pageSize]="paginationStuff.pageSize" (pageChange)="onPageChanged($event)">
+</app-pagination>

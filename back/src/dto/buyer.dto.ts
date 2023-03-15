@@ -23,3 +23,35 @@ export class BuyerFilterInput {
     @Field((type) => JSON, { nullable: true })
     updatedAt?: Range
 }
+
+@InputType()
+export class BuyerCreateInput {
+
+    @Field({ nullable: false })
+    lastName: string
+
+    @Field({ nullable: false })
+    firstName: string
+
+    @Field({ nullable: true })
+    country?: string
+}
+
+@InputType()
+export class BuyerUpdateInput {
+
+    @Field({ nullable: false })
+    id: string
+
+    @Field({ nullable: false })
+    lastName: string
+
+    @Field({ nullable: false })
+    firstName: string
+
+    @Field({ nullable: false })
+    country: string
+
+    @Field((type) => JSON, { nullable: true })
+    updatedAt?: Range
+}

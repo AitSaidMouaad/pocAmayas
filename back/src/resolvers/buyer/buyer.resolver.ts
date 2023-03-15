@@ -1,8 +1,9 @@
 import { Inject } from "@nestjs/common";
 import { ExceptionsHandler } from "@nestjs/core/exceptions/exceptions-handler";
-import { Args, Mutation, Query, Resolver, InputType, Field } from "@nestjs/graphql";
+import { Args, Mutation, Query, Resolver, InputType, Field, Float } from "@nestjs/graphql";
 import { BuyerModel } from "src/db/models/buyer/buyer.model";
-import { BuyerFilterInput } from "src/dto/buyer.dto";
+import { BuyerCreateInput, BuyerFilterInput, BuyerUpdateInput } from "src/dto/buyer.dto";
+import { PaginateInput, PaginationOutput } from "src/dto/pagination.dto";
 import { BuyerService } from "src/services/buyer/buyer.service";
 import { ProductService } from "src/services/product/product.service";
 import { DeleteResult } from "typeorm";
@@ -45,34 +46,33 @@ export class BuyerResolver {
         return await this.buyerSrv.filter(query)
     }
 
+    @Query(returns =>PaginationOutput)
+    async paginateBuyers(@Args('payload') payload: PaginateInput): Promise<PaginationOutput> {
+        return await this.buyerSrv.paginate(payload)
+    }
+
+    @Query(returns => Float)
+    async countBuyers(): Promise<number> {
+        return await this.buyerSrv.count()
+    }
+
     /** mutations **/
 
     @Mutation(returns => BuyerModel)
-    async createBuyer(
-        @Args('firstName') firstName: string,
-        @Args('lastName') lastName: string,
+    async createBuyer(@Args('payload') payload: BuyerCreateInput
     ): Promise<BuyerModel> {
-        return await this.buyerSrv.create({
-            firstName, 
-            lastName,
-        })
+        return await this.buyerSrv.create(payload)
     }
 
     @Mutation(returns => BuyerModel)
     async updateBuyer(
-        @Args('id') id: string,
-        @Args('firstName') firstName: string,
-        @Args('lastName') lastName: string,
-        @Args('country') country: string
+        @Args('payload') payload: BuyerUpdateInput
     ): Promise<BuyerModel> {
         const buyer = await this.buyerSrv.update({
-            id: parseInt(id),
-            firstName, 
-            lastName,
-            country,
+            ...payload,
+            id: parseInt(payload.id),
             updatedAt: new Date()
         })
-        //console.log("Buyer Cr d: ", buyer)
         return buyer;
     }
 
