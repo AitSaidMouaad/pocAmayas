@@ -11,18 +11,14 @@ export class ProductModel {
 
     @Field()
     @PrimaryGeneratedColumn('increment')
-    id: number
+    id?: number
 
     @Field()
     @Column({ length: 500, nullable: false })
     name: string
 
     @Field()
-    @Column({ length: 500, nullable: false })
-    qrCode: string
-
-    @Field()
-    @Column()
+    @Column({ nullable: false, default: new Date() })
     @CreateDateColumn()
     createdAt?: Date
 
@@ -32,11 +28,11 @@ export class ProductModel {
     updatedAt?: Date
 
     @Field(() => BuyerModel)
-    @ManyToOne(type => BuyerModel, buyer => buyer.id)
-    @JoinColumn()
+    @ManyToOne(type => BuyerModel, buyer => buyer.id, { cascade: true, eager: true })
+    @JoinColumn({ name: 'buyerId' })
     buyer: BuyerModel;
 
-
 }
+
 
 

@@ -1,12 +1,10 @@
 import { Inject } from "@nestjs/common";
-import { ExceptionsHandler } from "@nestjs/core/exceptions/exceptions-handler";
 import { Args, Mutation, Query, Resolver, InputType, Field, Float } from "@nestjs/graphql";
 import { BuyerModel } from "src/db/models/buyer/buyer.model";
 import { BuyerCreateInput, BuyerFilterInput, BuyerUpdateInput } from "src/dto/buyer.dto";
-import { PaginateInput, PaginationOutput } from "src/dto/pagination.dto";
+import { PaginateInput, BuyersPaginationOutput } from "src/dto/pagination.dto";
 import { BuyerService } from "src/services/buyer/buyer.service";
-import { ProductService } from "src/services/product/product.service";
-import { DeleteResult } from "typeorm";
+
 
 
 @InputType()
@@ -46,8 +44,8 @@ export class BuyerResolver {
         return await this.buyerSrv.filter(query)
     }
 
-    @Query(returns =>PaginationOutput)
-    async paginateBuyers(@Args('payload') payload: PaginateInput): Promise<PaginationOutput> {
+    @Query(returns =>BuyersPaginationOutput)
+    async paginateBuyers(@Args('payload') payload: PaginateInput): Promise<BuyersPaginationOutput> {
         return await this.buyerSrv.paginate(payload)
     }
 

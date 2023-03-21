@@ -2,9 +2,9 @@ import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { BuyerModel } from 'src/db/models/buyer/buyer.model';
 import { BuyerCreateInput, BuyerFilterInput } from 'src/dto/buyer.dto';
-import { PaginateInput, PaginationOutput } from 'src/dto/pagination.dto';
+import { PaginateInput } from 'src/dto/pagination.dto';
 import { buildBuyerFilterQuery } from 'src/queryBuilders';
-import { DeleteResult, Like, Repository, UpdateResult } from 'typeorm';
+import { DeleteResult, Like, Repository } from 'typeorm';
 
 @Injectable()
 export class BuyerService {

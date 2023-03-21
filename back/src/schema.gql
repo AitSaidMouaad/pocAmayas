@@ -16,9 +16,31 @@ A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date
 """
 scalar DateTime
 
-type PaginationOutput {
+type ProductModel {
+  id: Float!
+  name: String!
+  createdAt: DateTime!
+  updatedAt: DateTime!
+  buyer: BuyerModel!
+}
+
+type BuyersPaginationOutput {
   buyers: [BuyerModel!]!
   count: Float!
+}
+
+type ProductsPaginationOutput {
+  products: [ProductModel!]!
+  count: Float!
+}
+
+input BuyerModelInput {
+  id: Float!
+  firstName: String!
+  lastName: String!
+  country: String!
+  createdAt: DateTime!
+  updatedAt: DateTime!
 }
 
 type Query {
@@ -26,8 +48,14 @@ type Query {
   buyers: [BuyerModel!]!
   searchBuyers(query: String!): [BuyerModel!]!
   filterBuyers(query: BuyerFilterInput!): [BuyerModel!]!
-  paginateBuyers(payload: PaginateInput!): PaginationOutput!
+  paginateBuyers(payload: PaginateInput!): BuyersPaginationOutput!
   countBuyers: Float!
+  product(id: String!): ProductModel!
+  products: [ProductModel!]!
+  searchProducts(query: String!): [ProductModel!]!
+  filterProducts(query: ProductFilterInput!): [ProductModel!]!
+  paginateProducts(payload: PaginateInput!): ProductsPaginationOutput!
+  countProducts: Float!
 }
 
 input BuyerFilterInput {
@@ -47,10 +75,18 @@ input PaginateInput {
   page: Float!
 }
 
+input ProductFilterInput {
+  createdAt: JSON
+  updatedAt: JSON
+}
+
 type Mutation {
   createBuyer(payload: BuyerCreateInput!): BuyerModel!
   updateBuyer(payload: BuyerUpdateInput!): BuyerModel!
   deleteBuyer(id: String!): BuyerModel!
+  createProduct(payload: ProductCreateInput!): ProductModel!
+  updateProduct(payload: ProductUpdateInput!): ProductModel!
+  deleteProduct(id: String!): ProductModel!
 }
 
 input BuyerCreateInput {
@@ -64,5 +100,19 @@ input BuyerUpdateInput {
   lastName: String!
   firstName: String!
   country: String!
+  updatedAt: JSON
+}
+
+input ProductCreateInput {
+  name: String!
+  buyerId: String!
+  buyer: BuyerModelInput
+}
+
+input ProductUpdateInput {
+  id: String!
+  name: String!
+  buyerId: String!
+  buyer: BuyerModelInput
   updatedAt: JSON
 }

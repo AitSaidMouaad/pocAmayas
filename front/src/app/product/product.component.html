@@ -1,0 +1,20 @@
+<form [formGroup]="productForm" (ngSubmit)="onSubmit()">
+    <div>
+      <label for="name">Name:</label>
+      <input type="text" id="name" formControlName="name">
+      <div *ngIf="productForm.get('name')?.invalid && (productForm.get('name')?.dirty || productForm.get('name')?.touched)">
+        <div *ngIf="productForm.get('name')?.errors">Name is required.</div>
+      </div>
+    </div>
+    <div>
+      <label for="buyer">Buyer:</label>
+      <input type="text" formControlName="buyerId" (input)="onSearchInput($event)">
+      <ul class="buyers-list">
+        <li  *ngFor="let buyer of buyers$ | async" (click)="onBuyerClick(buyer)">
+          {{buyer!.firstName}} {{buyer!.lastName}}
+        </li>
+      </ul>
+    </div>
+    <button [disabled]="!selectedBuyer" type="submit">Submit</button>
+  </form>
+ 

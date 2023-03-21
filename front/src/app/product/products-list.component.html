@@ -1,0 +1,44 @@
+<h2>List of Products</h2>
+
+<button class="create-product-btn" (click)="createProduct()">Create Product</button>
+
+<div class="search-filter-container">
+    <div class="search-container">
+        <input type="text" placeholder="Search by Name, Buyer FirstName, lastname or country" [(ngModel)]="searchTerm" (keyup)="searchProducts()">
+    </div>
+    <div class="filter-container">
+        <label for="date-filter">Filter by Date:</label>
+        <label for="date-filter-from">From</label>
+        <input type="date" name="date-filter-from" id="date-filter-from" [(ngModel)]="filterStuff.createdAt.from"
+            (change)="filterProducts()">
+        <label for="date-filter-from">To</label>
+        <input type="date" name="date-filter-to" id="date-filter-to" [(ngModel)]="filterStuff.createdAt.to"
+            (change)="filterProducts()">
+    </div>
+</div>
+<h4>Number of Products: {{ totalItems }}</h4>
+<table>
+    <thead>
+        <tr>
+            <th>ID</th>
+            <th>Name</th>
+            <th>Buyer firstName</th>
+            <th>Buyer lastName</th>
+            <th>Buyer Country</th>
+            <th>Created At</th>
+            <!-- <th>Updated At</th> -->
+        </tr>
+    </thead>
+    <tbody>
+        <tr *ngFor="let product of products$ | async" [ngClass]="'highlighted'" (click)="editProduct(product.id)">
+            <td>{{ product.id }}</td>
+            <td>{{ product.name }}</td>
+            <td>{{ product.buyer.firstName }}</td>
+            <td>{{ product.buyer.lastName }}</td>
+            <td>{{ product.buyer.country }}</td>
+            <td>{{ product.createdAt | date:'dd/MM/yyyy' }}</td>
+        </tr>
+    </tbody>
+</table>
+<app-pagination *ngIf="totalItems>0" [currentPage]="paginationStuff.page" [totalItems]="totalItems" [pageSize]="paginationStuff.pageSize" (pageChange)="onPageChanged($event)">
+</app-pagination>

@@ -8,6 +8,15 @@
 /* tslint:disable */
 /* eslint-disable */
 
+export interface BuyerModelInput {
+    id: number;
+    firstName: string;
+    lastName: string;
+    country: string;
+    createdAt: DateTime;
+    updatedAt: DateTime;
+}
+
 export interface BuyerFilterInput {
     id?: Nullable<JSON>;
     country?: Nullable<string>;
@@ -18,6 +27,11 @@ export interface BuyerFilterInput {
 export interface PaginateInput {
     pageSize: number;
     page: number;
+}
+
+export interface ProductFilterInput {
+    createdAt?: Nullable<JSON>;
+    updatedAt?: Nullable<JSON>;
 }
 
 export interface BuyerCreateInput {
@@ -34,6 +48,20 @@ export interface BuyerUpdateInput {
     updatedAt?: Nullable<JSON>;
 }
 
+export interface ProductCreateInput {
+    name: string;
+    buyerId: string;
+    buyer?: Nullable<BuyerModelInput>;
+}
+
+export interface ProductUpdateInput {
+    id: string;
+    name: string;
+    buyerId: string;
+    buyer?: Nullable<BuyerModelInput>;
+    updatedAt?: Nullable<JSON>;
+}
+
 export interface BuyerModel {
     id: number;
     firstName: string;
@@ -43,8 +71,21 @@ export interface BuyerModel {
     updatedAt: DateTime;
 }
 
-export interface PaginationOutput {
+export interface ProductModel {
+    id: number;
+    name: string;
+    createdAt: DateTime;
+    updatedAt: DateTime;
+    buyer: BuyerModel;
+}
+
+export interface BuyersPaginationOutput {
     buyers: BuyerModel[];
+    count: number;
+}
+
+export interface ProductsPaginationOutput {
+    products: ProductModel[];
     count: number;
 }
 
@@ -53,14 +94,23 @@ export interface IQuery {
     buyers(): BuyerModel[] | Promise<BuyerModel[]>;
     searchBuyers(query: string): BuyerModel[] | Promise<BuyerModel[]>;
     filterBuyers(query: BuyerFilterInput): BuyerModel[] | Promise<BuyerModel[]>;
-    paginateBuyers(payload: PaginateInput): PaginationOutput | Promise<PaginationOutput>;
+    paginateBuyers(payload: PaginateInput): BuyersPaginationOutput | Promise<BuyersPaginationOutput>;
     countBuyers(): number | Promise<number>;
+    product(id: string): ProductModel | Promise<ProductModel>;
+    products(): ProductModel[] | Promise<ProductModel[]>;
+    searchProducts(query: string): ProductModel[] | Promise<ProductModel[]>;
+    filterProducts(query: ProductFilterInput): ProductModel[] | Promise<ProductModel[]>;
+    paginateProducts(payload: PaginateInput): ProductsPaginationOutput | Promise<ProductsPaginationOutput>;
+    countProducts(): number | Promise<number>;
 }
 
 export interface IMutation {
     createBuyer(payload: BuyerCreateInput): BuyerModel | Promise<BuyerModel>;
     updateBuyer(payload: BuyerUpdateInput): BuyerModel | Promise<BuyerModel>;
     deleteBuyer(id: string): BuyerModel | Promise<BuyerModel>;
+    createProduct(payload: ProductCreateInput): ProductModel | Promise<ProductModel>;
+    updateProduct(payload: ProductUpdateInput): ProductModel | Promise<ProductModel>;
+    deleteProduct(id: string): ProductModel | Promise<ProductModel>;
 }
 
 export type DateTime = any;

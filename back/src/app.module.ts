@@ -11,12 +11,14 @@ import { BuyerResolver } from './resolvers/buyer/buyer.resolver';
 import { ProductModel } from './db/models/product/product.model';
 import { BuyerModel } from './db/models/buyer/buyer.model';
 import GraphQLJSON from 'graphql-type-json';
+import { ProductResolver } from './resolvers/product/product.resolver';
 
 
 @Module({
   imports: [TypeOrmModule.forRoot({
     type: "sqlite",
     database: "data/dev.db",
+    autoLoadEntities: true,
     entities: [BuyerModel,ProductModel], 
     synchronize: true, 
     logging: true,
@@ -38,6 +40,6 @@ import GraphQLJSON from 'graphql-type-json';
   }),
   ],
   controllers: [AppController],
-  providers: [AppService, BuyerService, ProductService, BuyerResolver],
+  providers: [AppService, BuyerService, ProductService, BuyerResolver, ProductResolver],
 })
 export class AppModule { }

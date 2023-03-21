@@ -1,7 +1,7 @@
 import { Field, ObjectType, InputType } from "@nestjs/graphql"
 import { Entity, PrimaryGeneratedColumn, Column, CreateDateColumn, UpdateDateColumn } from "typeorm"
 
-
+@InputType('BuyerModelInput')
 @ObjectType()
 @Entity()
 export class BuyerModel {

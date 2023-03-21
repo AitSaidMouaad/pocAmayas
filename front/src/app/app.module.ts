@@ -17,7 +17,7 @@ import { AppComponent } from './app.component';
     AppRoutingModule,
     NgxsModule.forRoot([], {}),
     NgxsRouterPluginModule.forRoot(),
-    HttpClientModule
+    HttpClientModule,
   ],
   providers: [],
   bootstrap: [AppComponent]

@@ -69,7 +69,6 @@ export class BuyerService {
         ...payload.payload
       } }
     }).valueChanges.pipe(map(result => {
-      console.log(result)
       return result.data.filterBuyers
     }))
   }

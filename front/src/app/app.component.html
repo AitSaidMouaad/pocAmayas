@@ -1,4 +1,14 @@
-<div class="pageContainer">
-    <h1>Buyer App</h1>
-    <router-outlet></router-outlet>
-</div>
+<div class="navbar">
+    <h1 class="navbar-title">My App</h1>
+    <div class="navbar-tabs" [class.active]="navbarActive">
+      <div class="navbar-tab" routerLink="/products" routerLinkActive="active">
+        <i class="fas fa-home navbar-tab-icon"></i>
+        Products
+      </div>
+      <div class="navbar-tab" routerLink="/buyers" routerLinkActive="active">
+        <i class="fas fa-cog navbar-tab-icon"></i>
+        Buyers
+      </div> 
+    </div>
+  </div>
+   <div class="router-container"><router-outlet></router-outlet></div>

@@ -20,13 +20,10 @@ import { BuyersListComponent } from './buyers-list.component';
   ],
   imports: [
     CommonModule,
-    HttpClientModule,
+    SharedModule,
     BuyerRoutingModule,
-    FormsModule,
-    ReactiveFormsModule,
     NgxsModule.forFeature([BuyerState]),
-    SharedModule
   ],
   providers: [BuyerService]
-}) 
+})
 export class BuyerModule { } 
