@@ -15,7 +15,8 @@ export class ProductService {
     }
 
     async create(product: ProductModel): Promise<ProductModel> {
-        return await this.productRepo.save(product);
+        let entity = this.productRepo.create(product);
+        return await this.productRepo.save(entity);
     }
 
     async getOne(id: number): Promise<ProductModel> {

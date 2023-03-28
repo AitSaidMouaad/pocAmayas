@@ -18,7 +18,7 @@ export class DeleteOutput{
 }
 
 @Resolver(of => BuyerModel)
-export class BuyerResolver {
+export class BuyerResolver  {
     constructor(@Inject(BuyerService) private buyerSrv: BuyerService,
     ) { }
 

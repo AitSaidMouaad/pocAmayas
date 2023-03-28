@@ -1,6 +1,7 @@
 import { BuyerModel, BuyerCreateInput, BuyerUpdateInput, PaginateInput, BuyerFilterInput } from "../graphql/graphql";
 
 export interface BuyerStateModel {
+    allBuyers: [],
     buyers: BuyerModel[],
     count: number,
     selectedBuyer? : {

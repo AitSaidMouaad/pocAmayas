@@ -1,23 +1,31 @@
 import { Injectable } from '@angular/core';
-import { State, Action, StateContext, Selector } from '@ngxs/store';
+import { State, Action, StateContext, Selector, NgxsAfterBootstrap } from '@ngxs/store';
 import { tap } from 'rxjs/operators';
 import { BuyerService } from './buyer.service';
 import { BuyerCreateInput, BuyerFilterInput, BuyerModel, BuyerUpdateInput, PaginateInput } from '../graphql/graphql';
 import { BuyerStateModel, CountBuyers, CreateBuyer, EditBuyer, FilterBuyers, PaginateBuyers, SearchBuyers, SelectedBuyer } from './buyer.dto';
 
-
+/** les inits se font coté state */
 
 @Injectable()
 @State<BuyerStateModel>({
   name: 'buyer',
   defaults: {
+    allBuyers: [],
     buyers: [],
     count: 0,
   }
 
 })
-export class BuyerState {
+export class BuyerState implements NgxsAfterBootstrap {
 
+  /** toute la liste */
+  @Selector()
+  static allBuyers(state: BuyerStateModel) {
+    return state.allBuyers;
+  }
+
+  /** pour la pâgination */
   @Selector()
   static buyers(state: BuyerStateModel) {
     return state.buyers;
@@ -36,9 +44,22 @@ export class BuyerState {
 
   constructor(private buyerSvc: BuyerService) { }
 
+  /** loder les buyers ici */
+  ngxsAfterBootstrap(ctx: StateContext<any>): void {
+    const state = ctx.getState()
+    this.buyerSvc.getAll().subscribe(res => {
+      ctx.setState({
+        ...state,
+        allBuyers: res
+      })
+    })
+  }
+
   @Action(CreateBuyer)
   createBuyer({ getState }: StateContext<BuyerStateModel>, payload: BuyerCreateInput) {
+    console.log(getState().allBuyers)
     return this.buyerSvc.createBuyer(payload);
+
   }
 
   @Action(EditBuyer)

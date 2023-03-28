@@ -76,7 +76,7 @@ export class ProductResolver {
             ...payload,
             buyer,
             id: parseInt(payload.id),
-            updatedAt: new Date()
+            updatedAt: new Date()  // delete ça, utiliser entity coté services
         })
         return product;
     }

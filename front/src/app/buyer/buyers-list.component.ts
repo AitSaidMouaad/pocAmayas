@@ -54,6 +54,7 @@ export class BuyersListComponent implements OnInit {
 
   ngOnInit(): void {
     this.initBuyers()
+    console.log()
   }
 
   async initBuyers(): Promise<void> {

@@ -20,6 +20,8 @@ interface CountBuyers {
 })
 export class BuyerService {
 
+
+
   constructor(private apollo: Apollo) { }
 
   createBuyer(payload: BuyerCreateInput) {
@@ -27,6 +29,14 @@ export class BuyerService {
       mutation: CREATE_BUYER,
       variables: payload
     })
+  }
+
+  getAll() {
+    return this.apollo.watchQuery<any>({
+      query: ALL_BUYERS,
+    }).valueChanges.pipe(map(result => {
+      return result.data.buyers
+    }))
   }
 
   editBuyer(payload: BuyerCreateInput) {
@@ -61,13 +71,15 @@ export class BuyerService {
       return result.data
     }))
   }
-  
+
   filterBuyers(payload: any) {
     return this.apollo.watchQuery<any>({
       query: FILTER_BUYERS,
-      variables: { query: {
-        ...payload.payload
-      } }
+      variables: {
+        query: {
+          ...payload.payload
+        }
+      }
     }).valueChanges.pipe(map(result => {
       return result.data.filterBuyers
     }))
@@ -164,6 +176,19 @@ query paginateBuyers($payload: PaginateInput!){
       updatedAt
     }
     count
+  }
+}
+`
+
+const ALL_BUYERS = gql`
+query Buyers {
+  buyers {
+    id,
+    lastName,
+    firstName,
+    country,
+    createdAt,
+    updatedAt
   }
 }
 `
